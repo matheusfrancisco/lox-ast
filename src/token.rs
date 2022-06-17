@@ -46,7 +46,7 @@ impl fmt::Display for Token {
                "{:?} {} {}",
                self.ttype,
                self.lexeme,
-               if let Some(literal) = self.literal {
+               if let Some(literal) = &self.literal {
                    literal.to_string()
                } else {
                    "None".to_string()
