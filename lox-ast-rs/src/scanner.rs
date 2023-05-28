@@ -119,6 +119,11 @@ impl Scanner {
             '0'..='9' => {
                 self.number();
             }
+            _ => {
+                if c.is_ascii_alphabetic() || c == '_' {
+                    self.identifier();
+                }
+            }
 
             _ => {
                 return Err(LoxError::error(
@@ -128,6 +133,18 @@ impl Scanner {
             }
         }
         Ok(())
+    }
+
+    fn identifier(&mut self) {
+        while Scanner::is_alpha_numeric(self.peek()) {
+            self.advance();
+        }
+        let text: String = self.source[self.start..self.current].iter().collect();
+        if let Some(ttype) = Scanner::keywords(text.as_str()) {
+            self.add_token(ttype);
+        } else {
+            self.add_token(TokenType::Identifier);
+        }
     }
 
     fn number(&mut self) {
@@ -149,13 +166,17 @@ impl Scanner {
         self.add_token_object(TokenType::Number, Some(Object::Num(num)));
     }
 
-    fn peek_next(&self) -> Option<char> {
-        self.source.get(self.current + 1).copied()
-    }
-
     fn is_digit(ch: Option<char>) -> bool {
         if let Some(ch) = ch {
             ch.is_ascii_digit()
+        } else {
+            false
+        }
+    }
+
+    fn is_alpha_numeric(ch: Option<char>) -> bool {
+        if let Some(ch) = ch {
+            ch.is_ascii_alphanumeric()
         } else {
             false
         }
@@ -219,5 +240,31 @@ impl Scanner {
 
     fn peek(&self) -> Option<char> {
         self.source.get(self.current).copied()
+    }
+
+    fn peek_next(&self) -> Option<char> {
+        self.source.get(self.current + 1).copied()
+    }
+
+    fn keywords(check: &str) -> Option<TokenType> {
+        match check {
+            "and" => Some(TokenType::And),
+            "class" => Some(TokenType::Class),
+            "else" => Some(TokenType::Else),
+            "false" => Some(TokenType::False),
+            "for" => Some(TokenType::For),
+            "fun" => Some(TokenType::Fun),
+            "if" => Some(TokenType::If),
+            "nil" => Some(TokenType::Nil),
+            "or" => Some(TokenType::Or),
+            "print" => Some(TokenType::Print),
+            "return" => Some(TokenType::Return),
+            "super" => Some(TokenType::Super),
+            "this" => Some(TokenType::This),
+            "true" => Some(TokenType::True),
+            "var" => Some(TokenType::Var),
+            "while" => Some(TokenType::While),
+            _ => None,
+        }
     }
 }
