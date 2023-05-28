@@ -146,7 +146,7 @@ impl Scanner {
         let value: String = self.source[self.start..self.current].iter().collect();
         let num: f64 = value.parse().unwrap();
 
-        self.add_token_object(TokenType::Number, Object::Num(num));
+        self.add_token_object(TokenType::Number, Some(Object::Num(num)));
     }
 
     fn peek_next(&self) -> Option<char> {
