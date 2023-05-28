@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub enum TokenType {
-    LeftParn,
+    LeftParen,
     RightParen,
     LeftBrace,
     RightBrace,
