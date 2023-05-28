@@ -119,12 +119,9 @@ impl Scanner {
             '0'..='9' => {
                 self.number();
             }
-            _ => {
-                if c.is_ascii_alphabetic() || c == '_' {
-                    self.identifier();
-                }
+            _ if c.is_ascii_alphabetic() || c == '_' => {
+                self.identifier();
             }
-
             _ => {
                 return Err(LoxError::error(
                     self.line,
