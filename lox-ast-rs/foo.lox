@@ -1,0 +1,12 @@
+/* this is a block comment with one line */
+
+if (1 + 1 == 2) {
+  print("valid");
+}
+
+/*
+this is a block
+with multiple lines
+commented
+*/
+
