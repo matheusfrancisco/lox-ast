@@ -134,7 +134,7 @@ impl Scanner {
         Ok(())
     }
 
-    fn scan_comment(&mut self) -> Result<(), LoxError>{
+    fn scan_comment(&mut self) -> Result<(), LoxError> {
         loop {
             match self.peek() {
                 Some('*') => {
@@ -154,7 +154,10 @@ impl Scanner {
                     self.advance();
                 }
                 None => {
-                  return Err(LoxError::error(self.line, "Unterminated comment".to_string()))
+                    return Err(LoxError::error(
+                        self.line,
+                        "Unterminated comment".to_string(),
+                    ))
                 }
                 _ => {
                     self.advance();
@@ -296,3 +299,9 @@ impl Scanner {
         }
     }
 }
+
+
+// scan all tokens from this expression print("Hello, world!") assert on tokens ;
+
+
+
